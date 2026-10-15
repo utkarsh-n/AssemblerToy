@@ -1,0 +1,86 @@
+name: AssemblerToy
+options:
+  bundleIdPrefix: com.utkarsh
+  deploymentTarget:
+    iOS: '27.0'
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: '6.0'
+    MARKETING_VERSION: '1.0'
+    CURRENT_PROJECT_VERSION: '6'
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+targets:
+  AssemblerCore:
+    type: framework
+    platform: iOS
+    sources: [Sources/AssemblerCore]
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.assemblertoy.core
+  AssemblerToy:
+    type: application
+    platform: iOS
+    sources: [App]
+    dependencies:
+      - target: AssemblerCore
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Assembler Toy
+        CFBundleName: Assembler Toy
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        UIUserInterfaceStyle: Dark
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        ITSAppUsesNonExemptEncryption: false
+        LSApplicationCategoryType: public.app-category.education
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.assemblertoy
+        TARGETED_DEVICE_FAMILY: '1'
+        SUPPORTS_MACCATALYST: NO
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+  AssemblerToySessionTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [Tests/SessionTests]
+    dependencies:
+      - target: AssemblerToy
+      - target: AssemblerCore
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.assemblertoy.sessiontests
+        TARGETED_DEVICE_FAMILY: '1'
+  AssemblerToyUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [UITests]
+    dependencies:
+      - target: AssemblerToy
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.assemblertoy.uitests
+        TARGETED_DEVICE_FAMILY: '1'
+schemes:
+  AssemblerToy:
+    build:
+      targets:
+        AssemblerToy: all
+    test:
+      gatherCoverageData: false
+      targets:
+        - AssemblerToySessionTests
+        - AssemblerToyUITests
